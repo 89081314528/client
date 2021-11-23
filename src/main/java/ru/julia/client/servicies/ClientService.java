@@ -5,5 +5,5 @@ import ru.julia.client.dto.FilesToTransferAndReceive;
 
 @Service
 public interface ClientService {
-    void answerFromServer (FilesToTransferAndReceive filesToTransferAndReceive);
+    void answerFromServer ();
 }

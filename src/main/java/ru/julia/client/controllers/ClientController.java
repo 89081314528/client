@@ -21,7 +21,7 @@ public class ClientController {
     }
 
     @RequestMapping("/answerFromServer")
-    public void answerFromServer (FilesToTransferAndReceive filesToTransferAndReceive) {
-        clientService.answerFromServer(filesToTransferAndReceive);
+    public void answerFromServer(FilesToTransferAndReceive filesToTransferAndReceive) {
+        clientService.answerFromServer();
     }
 }
