@@ -16,7 +16,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void answerFromServer() {
         List<String> clientFiles = new ArrayList<>();
-        clientFiles.add("file1");
+        clientFiles.add("file5");
         String clientName = "julia";
         FilesToTransferAndReceive filesToTransferAndReceive = fileStorageClient.filesToTransferAndReceive(clientFiles, clientName);
 

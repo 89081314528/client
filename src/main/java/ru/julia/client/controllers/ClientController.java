@@ -15,11 +15,6 @@ import java.util.List;
 public class ClientController {
     private final ClientService clientService;
 
-    @RequestMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
-
     @RequestMapping("/answerFromServer")
     public void answerFromServer(FilesToTransferAndReceive filesToTransferAndReceive) {
         clientService.answerFromServer();
