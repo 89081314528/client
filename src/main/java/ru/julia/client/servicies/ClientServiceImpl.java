@@ -6,14 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import ru.julia.client.clients.FileStorageClient;
-import ru.julia.client.dto.FilesToDeleteFromServerAndClient;
-import ru.julia.client.dto.FilesToTransferAndReceive;
+import ru.julia.client.dto.FilesToTransferReceiveDelete;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -26,32 +24,24 @@ public class ClientServiceImpl implements ClientService {
         List<String> clientFiles = makeClientFilesList();
         String clientName = "julia";
 
-        FilesToDeleteFromServerAndClient filesToDeleteFromServerAndClient =
-                fileStorageClient.filesToDeleteFromServerAndClient(clientFiles, clientName);
-        // удаление с сервера
-//        List<String> filesToDeleteFromServer = filesToDeleteFromServerAndClient.getFilesToDeleteFromServer();
-//        for (String s : filesToDeleteFromServer) {
-//            System.out.println("удален файл на сервере " + s);
-//            fileStorageClient.deleteFromServer(clientName, s);
-//        }
-        // удаление с клиента
-//        List<String> filesToDeleteFromClient = filesToDeleteFromServerAndClient.getFilesToDeleteFromClient();
-//        for (String s : filesToDeleteFromClient) {
-//            System.out.println("удален файл у клиента " + s);
-//            File file = new File("C:/Users/julia/Desktop/" + clientName + "/" + s);
-//            file.delete();
-//        }
+        FilesToTransferReceiveDelete filesToTransferReceiveDelete =
+                fileStorageClient.filesToTransferReceiveDelete(clientFiles, clientName);
 
-        FilesToTransferAndReceive filesToTransferAndReceive =
-                fileStorageClient.filesToTransferAndReceive(clientFiles, clientName);
+        // удаление с клиента (этот метод только у клиента)
+        List<String> filesToDeleteFromClient = filesToTransferReceiveDelete.getFilesToDeleteFromClient();
+        for (String s : filesToDeleteFromClient) {
+            System.out.println("удален файл у клиента " + s);
+            File file = new File("C:/Users/julia/Desktop/" + clientName + "/" + s);
+            file.delete();
+        }
         // добавление клиенту с сервера
-//        List<String> filesToTransferToClient = filesToTransferAndReceive.getFilesToTransfer();
-//        for (String s : filesToTransfer) {
-//            fileStorageClient.transfer(clientName, s);
-//            System.out.println("Передан файл " + s);
-//        }
+        List<String> filesToTransferToClient = filesToTransferReceiveDelete.getFilesToTransfer();
+        for (String s : filesToTransferToClient) {
+            fileStorageClient.transferToClient(clientName, s);
+            System.out.println("Передан файл " + s);
+        }
         // добавление на сервер с клиента
-        List<String> filesToReceiveFromClient = filesToTransferAndReceive.getFilesToReceive();
+        List<String> filesToReceiveFromClient = filesToTransferReceiveDelete.getFilesToReceive();
         for (String s : filesToReceiveFromClient) {
             System.out.println("Получен файл " + s);
             String path = "C:/Users/julia/Desktop/" + clientName + "/" + s;
@@ -67,6 +57,7 @@ public class ClientServiceImpl implements ClientService {
             MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
             fileStorageClient.receiveFromClient(clientName, s, multipartFile);
         }
+        fileStorageClient.getLastSyncDate(clientName);
     }
 
     List<String> makeClientFilesList() {
