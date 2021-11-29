@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+// аннотация стоит в классе FileStorageClient
 public class FeignSupportConfig {
     @Bean
     public Encoder multipartFormEncoder() {
