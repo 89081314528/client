@@ -15,4 +15,6 @@ public class ClientController {
     public void answerFromServer(FilesToSynchronized filesToSynchronized) {
         clientService.answerFromServer();
     }
+
+
 }

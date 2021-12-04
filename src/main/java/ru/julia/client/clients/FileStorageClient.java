@@ -20,7 +20,7 @@ public interface FileStorageClient {
 
     @RequestMapping("/transferToClient")
         // строит запрос для сервера
-    String transferToClient(@RequestParam("clientName") String clientName,
+    byte[] transferToClient(@RequestParam("clientName") String clientName,
                             @RequestParam("fileName") String fileName);
 
     @PostMapping(value = "/receiveFromClient", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -35,4 +35,12 @@ public interface FileStorageClient {
     @RequestMapping("/getLastSyncDate")
     void getLastSyncDate(@RequestParam("clientName") String clientName);
 
+    @RequestMapping("/makeSyncLock")
+    void makeSyncLock(@RequestParam("clientName")String clientName);
+
+    @RequestMapping("/makeSyncOpen")
+    void makeSyncOpen(@RequestParam("clientName")String clientName);
+
+    @RequestMapping("/getSyncLock")
+    public Integer getSyncLock(@RequestParam("clientName") String clientName);
 }
