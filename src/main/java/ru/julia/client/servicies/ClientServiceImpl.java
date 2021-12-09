@@ -1,6 +1,7 @@
 package ru.julia.client.servicies;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ClientServiceImpl implements ClientService {
     private final FileStorageClient fileStorageClient;
-    private final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
     @Value(value = "${clientName}")
     private String clientName;
     @Value(value = "${pathToClientHomeDir}")
