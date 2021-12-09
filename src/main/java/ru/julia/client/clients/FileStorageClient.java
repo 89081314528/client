@@ -15,8 +15,8 @@ import java.util.List;
 public interface FileStorageClient {
     @RequestMapping("/getFiles")
     FilesToSynchronized filesToSynchronized(@RequestParam("filesFromClient") List<String> filesFromClient,
-
-                                            @RequestParam("clientName") String clientName);
+                                            @RequestParam("clientName") String clientName,
+                                            @RequestParam("idDevice") String idDevice);
 
     @RequestMapping("/transferToClient")
         // строит запрос для сервера

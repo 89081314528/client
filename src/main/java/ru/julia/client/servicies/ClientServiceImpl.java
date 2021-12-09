@@ -40,7 +40,7 @@ public class ClientServiceImpl implements ClientService {
             log.info("синхронизация клиента " + clientName + idDevice + " началась");
 
             FilesToSynchronized filesToSynchronized =
-                    fileStorageClient.filesToSynchronized(clientFiles, clientName);
+                    fileStorageClient.filesToSynchronized(clientFiles, clientName, idDevice);
 
             // удаление с клиента (этот метод только у клиента)
             List<String> filesToDeleteFromClient = filesToSynchronized.getFilesToDeleteFromClient();
@@ -75,6 +75,7 @@ public class ClientServiceImpl implements ClientService {
                 try {
                     FileInputStream fileInputStream = new FileInputStream(file);
                     fileInputStream.transferTo(fileItem.getOutputStream());
+                    fileInputStream.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
