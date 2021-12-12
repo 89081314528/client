@@ -1,6 +1,7 @@
 package ru.julia.client.servicies;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ClientServiceImpl implements ClientService {
     private final FileStorageClient fileStorageClient;
-    private final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
     @Value(value = "${clientName}")
     private String clientName;
     @Value(value = "${pathToClientHomeDir}")
@@ -40,7 +41,7 @@ public class ClientServiceImpl implements ClientService {
             log.info("синхронизация клиента " + clientName + idDevice + " началась");
 
             FilesToSynchronized filesToSynchronized =
-                    fileStorageClient.filesToSynchronized(clientFiles, clientName);
+                    fileStorageClient.filesToSynchronized(clientFiles, clientName, idDevice);
 
             // удаление с клиента (этот метод только у клиента)
             List<String> filesToDeleteFromClient = filesToSynchronized.getFilesToDeleteFromClient();
@@ -75,6 +76,7 @@ public class ClientServiceImpl implements ClientService {
                 try {
                     FileInputStream fileInputStream = new FileInputStream(file);
                     fileInputStream.transferTo(fileItem.getOutputStream());
+                    fileInputStream.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
