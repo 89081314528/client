@@ -34,9 +34,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void answerFromServer() {
         List<String> clientFiles = makeClientFilesList();
-        log.info("имя переменной" + clientName);
-//        String clientName = "julia";
-        if (fileStorageClient.getSyncLock(clientName + idDevice) == 0) {   // !!!!!!!!!!
+        if (fileStorageClient.getSyncLock(clientName + idDevice) == 0) {
             fileStorageClient.makeSyncLock(clientName + idDevice);
             log.info("синхронизация клиента " + clientName + idDevice + " началась");
 
